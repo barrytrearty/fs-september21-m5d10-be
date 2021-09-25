@@ -11,7 +11,7 @@ import createHttpError from "http-errors";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { pipeline } from "stream";
-import { getPdfReadableStream } from "../tools/pdfDownloader.js";
+import { getPdfReadableStream } from "../utils/pdfDownloader.js";
 
 const { readJSON, writeJSON, writeFile } = fs;
 
