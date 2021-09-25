@@ -1,8 +1,9 @@
 import express from "express";
 import cors from "cors";
 import mediaRouter from "./media/index.js";
-import listEndpoints from "express-list-endpoints";
 import { join } from "path";
+
+import listEndpoints from "express-list-endpoints";
 
 import {
   badRequestErrorHandler,
@@ -14,7 +15,7 @@ import {
 const server = express();
 const port = process.env.PORT || 3005;
 
-const publicFilePath = join(process.cwd(), "public");
+// const publicFilePath = join(process.cwd(), "public");
 
 const whiteList = [process.env.FRONT_DEV_URL, process.env.FRONT_PROD_URL];
 
@@ -29,7 +30,7 @@ const corsOptions = {
   },
 };
 
-server.use(express.static(publicFilePath));
+// server.use(express.static());
 
 server.use(cors(corsOptions));
 server.use(express.json());

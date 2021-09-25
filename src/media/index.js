@@ -1,12 +1,12 @@
-import express from "express";
-import { fileURLToPath } from "url";
+import { Router } from "express";
 import fs from "fs-extra";
+import { fileURLToPath } from "url";
 import { dirname, join, extname } from "path";
 import uniqid from "uniqid";
+import createHttpError from "http-errors";
 import { mediaValidation, reviewValidation } from "./validation.js";
 import { validationResult } from "express-validator";
 import multer from "multer";
-import createHttpError from "http-errors";
 
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
@@ -15,17 +15,15 @@ import { getPdfReadableStream } from "../utils/pdfDownloader.js";
 
 const { readJSON, writeJSON, writeFile } = fs;
 
-const mediaRouter = express.Router();
-
 const mediaFilePath = join(
   dirname(fileURLToPath(import.meta.url)),
   "media.json"
 );
 
-const publicFolderPath = join(process.cwd(), "./public");
-
 const getMedia = () => readJSON(mediaFilePath);
 const writeMedia = (content) => writeJSON(mediaFilePath, content);
+
+const mediaRouter = Router();
 
 const cloudinaryStorage = new CloudinaryStorage({
   cloudinary,
