@@ -28,11 +28,11 @@ const corsOptions = {
     }
   },
 };
-server.use(cors(corsOptions));
-
-server.use(express.json());
 
 server.use(express.static(publicFilePath));
+
+server.use(cors(corsOptions));
+server.use(express.json());
 server.use("/media", mediaRouter);
 
 server.use(badRequestErrorHandler);
