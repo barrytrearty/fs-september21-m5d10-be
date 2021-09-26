@@ -20,6 +20,8 @@ const mediaFilePath = join(
   "media.json"
 );
 
+const imageFolderPath = join(process.cwd(), "./public/img");
+
 const getMedia = () => readJSON(mediaFilePath);
 const writeMedia = (content) => writeJSON(mediaFilePath, content);
 
@@ -48,7 +50,7 @@ mediaRouter.get("/:id", async (req, res, next) => {
     if (mediaSingle) {
       res.send(mediaSingle);
     } else {
-      next(console.log(`media ${id} does not exist`));
+      next(console.log(`media ${req.params.id} does not exist`));
     }
   } catch (error) {
     next(error);
@@ -98,6 +100,37 @@ mediaRouter.delete("/:id", async (req, res, next) => {
     next(error);
   }
 });
+
+mediaRouter.put(
+  "/:id/uploadPoster",
+  multer().single("poster"),
+  async (req, res, next) => {
+    try {
+      const { originalname, buffer } = req.file;
+      const extension = extname(originalname);
+      const fileName = `${req.params.id}${extension}`;
+
+      const pathToFile = join(imageFolderPath, fileName);
+      await fs.writeFile(pathToFile, buffer);
+
+      const media = await getMedia();
+      const index = media.findIndex((M) => M.id === req.params.id);
+      let mediaToBeUpdated = media[index];
+
+      const link = `http://localhost:3005/media/public/img/${fileName}`;
+      req.file = link;
+      const newPoster = { Poster: req.file };
+      const updatedMedia = { ...mediaToBeUpdated, ...newPoster };
+
+      media[index] = updatedMedia;
+      await writeMedia(media);
+      res.send(updatedMedia);
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+);
 
 mediaRouter.put(
   "/:id/poster",

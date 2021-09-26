@@ -15,7 +15,7 @@ import {
 const server = express();
 const port = process.env.PORT || 3005;
 
-// const publicFilePath = join(process.cwd(), "public");
+const publicFilePath = join(process.cwd(), "public");
 
 const whiteList = [process.env.FRONT_DEV_URL, process.env.FRONT_PROD_URL];
 
@@ -31,7 +31,7 @@ const corsOptions = {
 };
 
 // server.use(express.static());
-
+server.use(express.static(publicFilePath));
 server.use(cors(corsOptions));
 server.use(express.json());
 server.use("/media", mediaRouter);
