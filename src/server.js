@@ -10,7 +10,7 @@ import {
   notFoundErrorHandler,
   forbiddenErrorHandler,
   genericServerErrorHandler,
-} from "./errorhandlers.js";
+} from "./errorHandlers.js";
 
 const server = express();
 const port = process.env.PORT || 3005;
