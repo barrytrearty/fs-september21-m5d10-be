@@ -248,4 +248,16 @@ mediaRouter.get("/:id/PDFDownload", async (req, res, next) => {
   }
 });
 
+mediaRouter.get("search/:searchQuery", async (req, res, next) => {
+  try {
+    const media = await getMedia();
+    const mediaSearch = media.filter((m) =>
+      m.Title.toLowerCase().includes(req.params.searchQuery)
+    );
+    res.send(mediaSearch);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default mediaRouter;
