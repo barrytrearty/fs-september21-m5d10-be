@@ -43,6 +43,18 @@ mediaRouter.get("/", async (req, res, next) => {
   }
 });
 
+mediaRouter.get("search/:searchQuery", async (req, res, next) => {
+  try {
+    const media = await getMedia();
+    const mediaSearch = media.filter((m) =>
+      m.Title.toLowerCase().includes(req.params.searchQuery)
+    );
+    res.send(mediaSearch);
+  } catch (error) {
+    next(error);
+  }
+});
+
 mediaRouter.get("/:id", async (req, res, next) => {
   try {
     const media = await getMedia();
@@ -243,18 +255,6 @@ mediaRouter.get("/:id/PDFDownload", async (req, res, next) => {
     } else {
       next(createHttpError(404, `media/${req.params.id} not found`));
     }
-  } catch (error) {
-    next(error);
-  }
-});
-
-mediaRouter.get("search/:searchQuery", async (req, res, next) => {
-  try {
-    const media = await getMedia();
-    const mediaSearch = media.filter((m) =>
-      m.Title.toLowerCase().includes(req.params.searchQuery)
-    );
-    res.send(mediaSearch);
   } catch (error) {
     next(error);
   }
