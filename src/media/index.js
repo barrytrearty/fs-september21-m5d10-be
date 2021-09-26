@@ -43,7 +43,7 @@ mediaRouter.get("/", async (req, res, next) => {
   }
 });
 
-mediaRouter.get("search/:searchQuery", async (req, res, next) => {
+mediaRouter.get("/search/:searchQuery", async (req, res, next) => {
   try {
     const media = await getMedia();
     const mediaSearch = media.filter((m) =>
